@@ -4,8 +4,7 @@ import { Button } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import "./modules.css";
 
-const Calendar = () => {
-  const [week, setWeek] = useState([null, null]);
+const Calendar = ({ setWeek, week }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [startDate, endDate] = week;
 
