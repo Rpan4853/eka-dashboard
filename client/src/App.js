@@ -7,39 +7,46 @@ import "./App.css";
 
 const App = () => {
   const [week, setWeek] = useState([null, null]);
+
+  const tableSetUps = [
+    {
+      categories: [
+        "S. No",
+        "Classes Taught (Topics)",
+        "No. of Classes",
+        "Student Attendance (Average)",
+        "Remarks",
+        "Actions",
+      ],
+      columns: 5,
+    },
+    {
+      categories: [
+        "S. No",
+        "Classes Attended (Topics)",
+        "No. of Classes",
+        "Facilitator (Organization)",
+        "Remarks",
+        "Actions",
+      ],
+      columns: 5,
+    },
+    { categories: ["S. No", "Other Tasks", "Remarks"], columns: 3 },
+  ];
   return (
     <AuthStateProvider>
       <NavBar />
       <Calendar setWeek={setWeek} week={week} />
-      <Table
-        categories={[
-          "S. No",
-          "Classes Taught (Topics)",
-          "No. of Classes",
-          "Student Attendance (Average)",
-          "Remarks",
-          "Actions",
-        ]}
-        rows={[[1, "Math", 25, 25, undefined]]}
-        columns={5}
-      />
-      <Table
-        categories={[
-          "S. No",
-          "Classes Attended (Topics)",
-          "No. of Classes",
-          "Facilitator (Organization)",
-          "Remarks",
-          "Actions",
-        ]}
-        rows={[[1, "Math", 25, 25, undefined]]}
-        columns={5}
-      />
-      <Table
-        categories={["S. No", "Other Tasks", "Remarks"]}
-        rows={[]}
-        columns={3}
-      />
+      {tableSetUps.map((table, index) => {
+        return (
+          <Table
+            weekStartDate={week[0]}
+            categories={table.categories}
+            columns={table.columns}
+            tableType={index}
+          />
+        );
+      })}
     </AuthStateProvider>
   );
 };

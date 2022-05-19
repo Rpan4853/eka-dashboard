@@ -30,7 +30,7 @@ const NavBar = () => {
 
   const updateLocation = (loc) => {
     fetch("/api/user", {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify({ email: email, location: loc }),
       headers: new Headers({ "Content-Type": "application/json" }),
     }).then((resp) =>

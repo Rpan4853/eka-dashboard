@@ -3,8 +3,24 @@ const router = express.Router();
 const Row = require("./models/Row");
 const User = require("./models/User");
 
+router.get("/rows", (req, res) => {
+  res.send("to do");
+});
+
+router.post("/rows/add", (req, res) => {
+  res.send("to do");
+});
+
+router.put("/rows/edit", (req, res) => {
+  res.send("to do");
+});
+
+router.delete("/rows/delete", (req, res) => {
+  res.send("to do");
+});
+
 // Creates a User document if email does not exist
-router.post("/user", (req, res) => {
+router.put("/user", (req, res) => {
   User.findOneAndUpdate(
     { email: req.body.email },
     {

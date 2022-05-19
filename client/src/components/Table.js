@@ -1,11 +1,13 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
 import Row from "./Row";
 import { Button } from "react-bootstrap";
 
-const Table = ({ categories, rows, columns }) => {
+const Table = ({ categories, columns, weekStartDate, tableType }) => {
   const { verified, location, userId, isAdmin } = useContext(UserContext);
-  const [tableRows, setTableRows] = useState(rows);
+  const [tableRows, setTableRows] = useState([]);
+
+  //Need a useEffect to get the tableRows
 
   const addRow = () => {
     const newRow = new Array(columns).fill(undefined);

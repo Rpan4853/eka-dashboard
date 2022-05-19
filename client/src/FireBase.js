@@ -39,7 +39,7 @@ export const AuthStateProvider = ({ children }) => {
         setVerified(user.emailVerified);
         //get more info on user from database upon refresh
         fetch("/api/user", {
-          method: "POST",
+          method: "PUT",
           body: JSON.stringify({ email: user.email }),
           headers: new Headers({ "Content-Type": "application/json" }),
         }).then((resp) =>
@@ -61,7 +61,7 @@ export const AuthStateProvider = ({ children }) => {
       setEmail(result.user.email);
       setVerified(result.user.emailVerified);
       fetch("/api/user", {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify({ email: result.user.email }),
         headers: new Headers({ "Content-Type": "application/json" }),
       }).then((resp) => {
