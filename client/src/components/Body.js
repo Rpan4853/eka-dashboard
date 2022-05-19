@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { UserContext } from "../UserContext";
 import Calendar from "./Calendar";
 import Table from "./Table";
+import { Alert } from "react-bootstrap";
 
 const Body = () => {
+  const { verified, location, isAdmin } = useContext(UserContext);
   let startDate = JSON.parse(localStorage.getItem("startDate"));
   let endDate = JSON.parse(localStorage.getItem("endDate"));
   let localWeek = [null, null];
@@ -54,16 +57,35 @@ const Body = () => {
 
   return (
     <>
-      <Calendar setWeek={setWeek} week={week} />
+      {verified ? (
+        location ? (
+          <Calendar setWeek={setWeek} week={week} />
+        ) : (
+          <Alert variant="danger">
+            <Alert.Heading>Please select your location!</Alert.Heading>
+            <p>Select from the dropdown on the top of the page</p>
+          </Alert>
+        )
+      ) : (
+        <Alert variant="danger">
+          <Alert.Heading>Please log in to view dashboard!</Alert.Heading>
+          <p>
+            If you are a new user, make sure to select your location after
+            logging in with Google.
+          </p>
+        </Alert>
+      )}
       {tableSetUps.map((table, index) => {
-        return (
-          <Table
-            weekStartDate={week[0]}
-            categories={table.categories}
-            columns={table.columns}
-            tableType={index}
-          />
-        );
+        if (verified && week[0] && (location || isAdmin)) {
+          return (
+            <Table
+              weekStartDate={week[0]}
+              categories={table.categories}
+              columns={table.columns}
+              tableType={index}
+            />
+          );
+        }
       })}
     </>
   );

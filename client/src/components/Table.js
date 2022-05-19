@@ -3,8 +3,8 @@ import { UserContext } from "../UserContext";
 import Row from "./Row";
 import { Button } from "react-bootstrap";
 
-const Table = ({ categories, columns, weekStartDate, tableType }) => {
-  const { verified, location, userId, isAdmin } = useContext(UserContext);
+const Table = ({ categories, columns, tableType }) => {
+  const { userId, weekStartDate } = useContext(UserContext);
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
@@ -50,35 +50,33 @@ const Table = ({ categories, columns, weekStartDate, tableType }) => {
     });
   };
 
-  if (verified && weekStartDate && (location || isAdmin)) {
-    return (
-      <>
-        <table className="table align-middle">
-          <thead className="table-light">
-            <tr>
-              {categories.map((category) => (
-                <th>{category}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableRows.map((row, rowIndex) => (
-              <Row
-                key={row.id}
-                rowObjId={row.id}
-                row={row.data}
-                rowIndex={rowIndex}
-                deleteRow={deleteRow}
-              />
+  return (
+    <>
+      <table className="table align-middle">
+        <thead className="table-light">
+          <tr>
+            {categories.map((category) => (
+              <th>{category}</th>
             ))}
-          </tbody>
-        </table>
-        <Button variant="primary" onClick={addRow}>
-          Add Row
-        </Button>
-      </>
-    );
-  }
+          </tr>
+        </thead>
+        <tbody>
+          {tableRows.map((row, rowIndex) => (
+            <Row
+              key={row.id}
+              rowObjId={row.id}
+              row={row.data}
+              rowIndex={rowIndex}
+              deleteRow={deleteRow}
+            />
+          ))}
+        </tbody>
+      </table>
+      <Button variant="primary" onClick={addRow}>
+        Add Row
+      </Button>
+    </>
+  );
 };
 
 export default Table;
