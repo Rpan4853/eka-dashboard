@@ -22,7 +22,7 @@ const Table = ({ categories, columns, weekStartDate, tableType }) => {
 
   const addRow = () => {
     const newRow = new Array(columns).fill(undefined);
-    fetch("/api/rows/add", {
+    fetch("/api/rows", {
       method: "POST",
       body: JSON.stringify({
         userId: userId,
@@ -40,10 +40,14 @@ const Table = ({ categories, columns, weekStartDate, tableType }) => {
     );
   };
 
-  const deleteRow = (index) => {
-    const newRow = [...tableRows];
-    newRow.splice(index, 1);
-    setTableRows(newRow);
+  const deleteRow = (index, rowObjId) => {
+    fetch(`api/rows/${rowObjId}`, {
+      method: "DELETE",
+    }).then((resp) => {
+      const newRow = [...tableRows];
+      newRow.splice(index, 1);
+      setTableRows(newRow);
+    });
   };
 
   if (verified && (location || isAdmin)) {

@@ -11,7 +11,7 @@ mongoose.connect(mongoConnectionURL, () => {
   console.log("Connected to Mongo");
 });
 
-// Allows post requests to be read
+// Allows post, put, and delete requests bodies to be read
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 

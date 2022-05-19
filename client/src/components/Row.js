@@ -13,9 +13,16 @@ const Row = ({ rowObjId, row, rowIndex, deleteRow }) => {
     setEditInfo(newEditInfo);
   };
 
-  const saveInfo = () => {
-    setInfo(editInfo);
-    setCanEdit(false);
+  const saveEditInfo = () => {
+    console.log(editInfo);
+    fetch(`/api/rows`, {
+      method: "PUT",
+      body: JSON.stringify({ rowObjId: rowObjId, data: editInfo }),
+      headers: new Headers({ "Content-Type": "application/json" }),
+    }).then((resp) => {
+      setInfo(editInfo);
+      setCanEdit(false);
+    });
   };
 
   return (
@@ -33,10 +40,11 @@ const Row = ({ rowObjId, row, rowIndex, deleteRow }) => {
         : info.map((data) => <td>{data}</td>)}
 
       <Actions
-        saveInfo={saveInfo}
+        saveEditInfo={saveEditInfo}
         canEdit={canEdit}
         setCanEdit={setCanEdit}
         rowIndex={rowIndex}
+        rowObjId={rowObjId}
         deleteRow={deleteRow}
       />
     </tr>

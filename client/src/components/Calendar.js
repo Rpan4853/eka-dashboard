@@ -20,7 +20,6 @@ const Calendar = ({ setWeek, week }) => {
     setIsOpen(!isOpen);
   };
 
-  console.log(location);
   if (verified) {
     if (location) {
       return (

@@ -24,7 +24,7 @@ router.get("/rows", (req, res) => {
   );
 });
 
-router.post("/rows/add", (req, res) => {
+router.post("/rows", (req, res) => {
   Row.create({
     userId: req.body.userId,
     data: req.body.data,
@@ -37,12 +37,28 @@ router.post("/rows/add", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-router.put("/rows/edit", (req, res) => {
-  res.send("to do");
+router.put("/rows", (req, res) => {
+  Row.updateOne(
+    { _id: req.body.rowObjId },
+    { data: req.body.data },
+    (error, result) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.sendStatus(204);
+      }
+    }
+  );
 });
 
-router.delete("/rows/delete", (req, res) => {
-  res.send("to do");
+router.delete("/rows/:rowObjId", (req, res) => {
+  Row.deleteOne({ _id: req.params.rowObjId }, (error, result) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.sendStatus(204);
+    }
+  });
 });
 
 // Creates a User document if email does not exist

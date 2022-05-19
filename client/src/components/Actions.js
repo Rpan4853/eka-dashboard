@@ -1,12 +1,19 @@
 import React from "react";
 import { Button } from "react-bootstrap";
 
-const Actions = ({ saveInfo, canEdit, setCanEdit, rowIndex, deleteRow }) => {
+const Actions = ({
+  saveEditInfo,
+  canEdit,
+  setCanEdit,
+  rowIndex,
+  rowObjId,
+  deleteRow,
+}) => {
   return (
     <td>
       {canEdit ? (
         <>
-          <Button variant="primary" onClick={saveInfo}>
+          <Button variant="primary" onClick={saveEditInfo}>
             Save
           </Button>
           <Button variant="danger" onClick={() => setCanEdit(false)}>
@@ -18,7 +25,10 @@ const Actions = ({ saveInfo, canEdit, setCanEdit, rowIndex, deleteRow }) => {
           <Button variant="primary" onClick={() => setCanEdit(true)}>
             Edit
           </Button>
-          <Button variant="danger" onClick={() => deleteRow(rowIndex)}>
+          <Button
+            variant="danger"
+            onClick={() => deleteRow(rowIndex, rowObjId)}
+          >
             Delete
           </Button>
         </>
