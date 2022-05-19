@@ -51,11 +51,13 @@ const NavBar = () => {
           />
         </Navbar.Brand>
 
-        <Navbar.Text>{`${email} (${
-          isAdmin ? "Admin" : "Trainer"
-        })`}</Navbar.Text>
+        {verified ? (
+          <Navbar.Text>{`${email} (${
+            isAdmin ? "Admin" : "Trainer"
+          })`}</Navbar.Text>
+        ) : null}
 
-        {!isAdmin ? ( // admin does not need to select location
+        {!isAdmin && verified ? ( // admin does not need to select location
           <DropdownButton
             variant="success"
             title={location ? location : "Select Location"}

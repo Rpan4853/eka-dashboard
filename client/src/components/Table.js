@@ -4,7 +4,7 @@ import Row from "./Row";
 import { Button } from "react-bootstrap";
 
 const Table = ({ categories, rows, columns }) => {
-  const { userId } = useContext(UserContext);
+  const { verified, location, userId, isAdmin } = useContext(UserContext);
   const [tableRows, setTableRows] = useState(rows);
 
   const addRow = () => {
@@ -20,27 +20,29 @@ const Table = ({ categories, rows, columns }) => {
     setTableRows(newRow);
   };
 
-  return (
-    <>
-      <table className="table align-middle">
-        <thead className="table-light">
-          <tr>
-            {categories.map((category) => (
-              <th>{category}</th>
+  if (verified && (location || isAdmin)) {
+    return (
+      <>
+        <table className="table align-middle">
+          <thead className="table-light">
+            <tr>
+              {categories.map((category) => (
+                <th>{category}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {tableRows.map((row, rowIndex) => (
+              <Row row={row} rowIndex={rowIndex} deleteRow={deleteRow} />
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {tableRows.map((row, rowIndex) => (
-            <Row row={row} rowIndex={rowIndex} deleteRow={deleteRow} />
-          ))}
-        </tbody>
-      </table>
-      <Button variant="primary" onClick={addRow}>
-        Add Row
-      </Button>
-    </>
-  );
+          </tbody>
+        </table>
+        <Button variant="primary" onClick={addRow}>
+          Add Row
+        </Button>
+      </>
+    );
+  }
 };
 
 export default Table;
