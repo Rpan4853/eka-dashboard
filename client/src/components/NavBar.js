@@ -17,7 +17,6 @@ const NavBar = () => {
     isAdmin,
     location,
     setLocation,
-    userId,
     handleLogin,
     handleLogout,
   } = useContext(UserContext);

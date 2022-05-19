@@ -7,13 +7,37 @@ const Table = ({ categories, columns, weekStartDate, tableType }) => {
   const { verified, location, userId, isAdmin } = useContext(UserContext);
   const [tableRows, setTableRows] = useState([]);
 
-  //Need a useEffect to get the tableRows
+  useEffect(() => {
+    if (weekStartDate) {
+      fetch(
+        "/api/rows?" +
+          new URLSearchParams({
+            userId: userId,
+            weekStartDate: weekStartDate,
+            tableType: tableType,
+          })
+      ).then((resp) => resp.json().then((data) => setTableRows(data)));
+    }
+  }, [weekStartDate, userId]);
 
   const addRow = () => {
     const newRow = new Array(columns).fill(undefined);
-    newRow[0] = tableRows.length + 1;
-    const newTableRows = [...tableRows, newRow];
-    setTableRows(newTableRows);
+    fetch("/api/rows/add", {
+      method: "POST",
+      body: JSON.stringify({
+        userId: userId,
+        data: newRow,
+        weekStartDate: weekStartDate,
+        tableType: tableType,
+      }),
+      headers: new Headers({ "Content-Type": "application/json" }),
+    }).then((resp) =>
+      resp.json().then((data) => {
+        const objRow = { id: data._id, data: newRow }; //store objectId of row for put request
+        const newTableRows = [...tableRows, objRow];
+        setTableRows(newTableRows);
+      })
+    );
   };
 
   const deleteRow = (index) => {
@@ -35,7 +59,13 @@ const Table = ({ categories, columns, weekStartDate, tableType }) => {
           </thead>
           <tbody>
             {tableRows.map((row, rowIndex) => (
-              <Row row={row} rowIndex={rowIndex} deleteRow={deleteRow} />
+              <Row
+                key={row.id}
+                rowObjId={row.id}
+                row={row.data}
+                rowIndex={rowIndex}
+                deleteRow={deleteRow}
+              />
             ))}
           </tbody>
         </table>

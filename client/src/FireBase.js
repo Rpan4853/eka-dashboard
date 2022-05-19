@@ -44,6 +44,7 @@ export const AuthStateProvider = ({ children }) => {
           headers: new Headers({ "Content-Type": "application/json" }),
         }).then((resp) =>
           resp.json().then((data) => {
+            console.log(data);
             setIsAdmin(data.admin);
             setLocation(data.location);
             setUserId(data.id);
@@ -68,7 +69,7 @@ export const AuthStateProvider = ({ children }) => {
         resp.json().then((data) => {
           setIsAdmin(data.admin);
           setLocation(data.location);
-          setUserId(data.id);
+          setUserId(data._id);
         });
       });
     });
@@ -78,6 +79,9 @@ export const AuthStateProvider = ({ children }) => {
     const res = await signOut(auth);
     setEmail(null);
     setVerified(false);
+    setIsAdmin(false);
+    setLocation(null);
+    setUserId(null);
     return res;
   };
 
@@ -88,8 +92,8 @@ export const AuthStateProvider = ({ children }) => {
         verified,
         isAdmin,
         location,
-        setLocation,
         userId,
+        setLocation,
         handleLogin,
         handleLogout,
       }}

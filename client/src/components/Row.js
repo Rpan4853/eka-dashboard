@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import Actions from "./Actions";
 
-const Row = ({ row, rowIndex, deleteRow }) => {
+const Row = ({ rowObjId, row, rowIndex, deleteRow }) => {
   const [info, setInfo] = useState(row);
   const [canEdit, setCanEdit] = useState(false);
   const [editInfo, setEditInfo] = useState(info);
@@ -20,6 +20,7 @@ const Row = ({ row, rowIndex, deleteRow }) => {
 
   return (
     <tr>
+      <td>{rowIndex}</td>
       {canEdit
         ? editInfo.map((data, index) => (
             <td>

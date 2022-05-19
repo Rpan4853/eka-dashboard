@@ -4,11 +4,37 @@ const Row = require("./models/Row");
 const User = require("./models/User");
 
 router.get("/rows", (req, res) => {
-  res.send("to do");
+  Row.find(
+    {
+      email: req.query.email,
+      weekStartDate: req.query.weekStartDate,
+      tableType: req.query.tableType,
+    },
+    (error, rows) => {
+      if (error) {
+        console.log(error);
+      } else {
+        res.send(
+          rows.map((row) => {
+            return { id: row._id, data: row.data };
+          })
+        );
+      }
+    }
+  );
 });
 
 router.post("/rows/add", (req, res) => {
-  res.send("to do");
+  Row.create({
+    userId: req.body.userId,
+    data: req.body.data,
+    weekStartDate: req.body.weekStartDate,
+    tableType: req.body.tableType,
+  })
+    .then((event) => {
+      res.send(event);
+    })
+    .catch((err) => console.log(err));
 });
 
 router.put("/rows/edit", (req, res) => {

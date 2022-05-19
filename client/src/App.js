@@ -18,7 +18,7 @@ const App = () => {
         "Remarks",
         "Actions",
       ],
-      columns: 5,
+      columns: 4,
     },
     {
       categories: [
@@ -29,9 +29,9 @@ const App = () => {
         "Remarks",
         "Actions",
       ],
-      columns: 5,
+      columns: 4,
     },
-    { categories: ["S. No", "Other Tasks", "Remarks"], columns: 3 },
+    { categories: ["S. No", "Other Tasks", "Remarks", "Actions"], columns: 2 },
   ];
   return (
     <AuthStateProvider>

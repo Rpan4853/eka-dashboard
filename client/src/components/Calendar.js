@@ -20,42 +20,45 @@ const Calendar = ({ setWeek, week }) => {
     setIsOpen(!isOpen);
   };
 
+  console.log(location);
   if (verified) {
     if (location) {
-      <div className="Calendar-container">
-        <Button
-          className="shadow-none"
-          variant={isOpen ? "outline-danger" : "outline-primary"}
-          onClick={showCalendar}
-          disabled={!startDate}
-        >
-          {!startDate | isOpen
-            ? !startDate
-              ? "Choose Week"
-              : "Cancel"
-            : `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`}
-        </Button>
+      return (
+        <div className="Calendar-container">
+          <Button
+            className="shadow-none"
+            variant={isOpen ? "outline-danger" : "outline-primary"}
+            onClick={showCalendar}
+            disabled={!startDate}
+          >
+            {!startDate | isOpen
+              ? !startDate
+                ? "Choose Week"
+                : "Cancel"
+              : `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`}
+          </Button>
 
-        {isOpen | !startDate ? (
-          <>
-            <DatePicker
-              onChange={(date) => {
-                setIsOpen(false);
-                setWeek([
-                  date,
-                  new Date(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate() + 5
-                  ),
-                ]);
-              }}
-              filterDate={isMonday}
-              inline
-            />
-          </>
-        ) : null}
-      </div>;
+          {isOpen | !startDate ? (
+            <>
+              <DatePicker
+                onChange={(date) => {
+                  setIsOpen(false);
+                  setWeek([
+                    date,
+                    new Date(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate() + 5
+                    ),
+                  ]);
+                }}
+                filterDate={isMonday}
+                inline
+              />
+            </>
+          ) : null}
+        </div>
+      );
     } else {
       return (
         <Alert variant="danger">
