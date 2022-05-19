@@ -21,14 +21,14 @@ const Table = ({ categories, rows, columns }) => {
   return (
     <>
       <table className="table align-middle">
-        <thead>
+        <thead className="table-light">
           <tr>
             {categories.map((category) => (
               <th>{category}</th>
             ))}
           </tr>
         </thead>
-        <tbody className="table-group-divider">
+        <tbody>
           {tableRows.map((row, rowIndex) => (
             <Row row={row} rowIndex={rowIndex} deleteRow={deleteRow} />
           ))}

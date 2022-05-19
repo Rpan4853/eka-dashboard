@@ -23,6 +23,23 @@ const App = () => {
         rows={[[1, "Math", 25, 25, undefined]]}
         columns={5}
       />
+      <Table
+        categories={[
+          "S. No",
+          "Classes Attended (Topics)",
+          "No. of Classes",
+          "Facilitator (Organization)",
+          "Remarks",
+          "Actions",
+        ]}
+        rows={[[1, "Math", 25, 25, undefined]]}
+        columns={5}
+      />
+      <Table
+        categories={["S. No", "Other Tasks", "Remarks"]}
+        rows={[]}
+        columns={3}
+      />
     </AuthStateProvider>
   );
 };
