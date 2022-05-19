@@ -50,19 +50,27 @@ const NavBar = () => {
             alt="logo"
           />
         </Navbar.Brand>
+
         <Navbar.Text>{`${email} (${
           isAdmin ? "Admin" : "Trainer"
         })`}</Navbar.Text>
-        <DropdownButton
-          variant="success"
-          title={location ? location : "Select Location"}
-        >
-          {locations.map((location) => (
-            <Dropdown.Item as="button" onClick={() => updateLocation(location)}>
-              {location}
-            </Dropdown.Item>
-          ))}
-        </DropdownButton>
+
+        {!isAdmin ? ( // admin does not need to select location
+          <DropdownButton
+            variant="success"
+            title={location ? location : "Select Location"}
+          >
+            {locations.map((location) => (
+              <Dropdown.Item
+                as="button"
+                onClick={() => updateLocation(location)}
+              >
+                {location}
+              </Dropdown.Item>
+            ))}
+          </DropdownButton>
+        ) : null}
+
         {!verified ? (
           <Button variant="primary" onClick={handleLogin}>
             Log In
