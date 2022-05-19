@@ -8,7 +8,7 @@ const Table = ({ categories, columns, weekStartDate, tableType }) => {
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
-    if (weekStartDate) {
+    if (weekStartDate && userId) {
       fetch(
         "/api/rows?" +
           new URLSearchParams({
@@ -50,7 +50,7 @@ const Table = ({ categories, columns, weekStartDate, tableType }) => {
     });
   };
 
-  if (verified && (location || isAdmin)) {
+  if (verified && weekStartDate && (location || isAdmin)) {
     return (
       <>
         <table className="table align-middle">

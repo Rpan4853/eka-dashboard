@@ -14,7 +14,6 @@ const Row = ({ rowObjId, row, rowIndex, deleteRow }) => {
   };
 
   const saveEditInfo = () => {
-    console.log(editInfo);
     fetch(`/api/rows`, {
       method: "PUT",
       body: JSON.stringify({ rowObjId: rowObjId, data: editInfo }),

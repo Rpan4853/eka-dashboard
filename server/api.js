@@ -6,7 +6,7 @@ const User = require("./models/User");
 router.get("/rows", (req, res) => {
   Row.find(
     {
-      email: req.query.email,
+      userId: req.query.userId,
       weekStartDate: req.query.weekStartDate,
       tableType: req.query.tableType,
     },

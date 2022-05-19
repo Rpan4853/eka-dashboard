@@ -81,6 +81,8 @@ export const AuthStateProvider = ({ children }) => {
     setIsAdmin(false);
     setLocation(null);
     setUserId(null);
+    localStorage.removeItem("startDate");
+    localStorage.removeItem("endDate");
     return res;
   };
 
