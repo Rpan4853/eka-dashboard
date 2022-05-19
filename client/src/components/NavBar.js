@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
 import "./modules.css";
-import { Navbar, Container, Button } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Button,
+  Dropdown,
+  DropdownButton,
+} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const NavBar = () => {
@@ -10,10 +16,29 @@ const NavBar = () => {
     verified,
     isAdmin,
     location,
+    setLocation,
     userId,
     handleLogin,
     handleLogout,
   } = useContext(UserContext);
+
+  const locations = [
+    "Panhar, Uttar Pradesh",
+    "Jhavar Ka Purva, Uttar Pradesh",
+    "Visakhapatnam, Andhra Pradesh",
+  ];
+
+  const updateLocation = (loc) => {
+    fetch("/api/user", {
+      method: "POST",
+      body: JSON.stringify({ email: email, location: loc }),
+      headers: new Headers({ "Content-Type": "application/json" }),
+    }).then((resp) =>
+      resp.json().then((data) => {
+        setLocation(loc);
+      })
+    );
+  };
 
   return (
     <Navbar bg="light" sticky="top">
@@ -28,6 +53,16 @@ const NavBar = () => {
         <Navbar.Text>{`${email} (${
           isAdmin ? "Admin" : "Trainer"
         })`}</Navbar.Text>
+        <DropdownButton
+          variant="success"
+          title={location ? location : "Select Location"}
+        >
+          {locations.map((location) => (
+            <Dropdown.Item as="button" onClick={() => updateLocation(location)}>
+              {location}
+            </Dropdown.Item>
+          ))}
+        </DropdownButton>
         {!verified ? (
           <Button variant="primary" onClick={handleLogin}>
             Log In

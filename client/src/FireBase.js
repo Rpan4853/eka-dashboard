@@ -37,6 +37,18 @@ export const AuthStateProvider = ({ children }) => {
       if (user) {
         setEmail(user.email);
         setVerified(user.emailVerified);
+        //get more info on user from database upon refresh
+        fetch("/api/user", {
+          method: "POST",
+          body: JSON.stringify({ email: user.email }),
+          headers: new Headers({ "Content-Type": "application/json" }),
+        }).then((resp) =>
+          resp.json().then((data) => {
+            setIsAdmin(data.admin);
+            setLocation(data.location);
+            setUserId(data.id);
+          })
+        );
       } else {
         setEmail(null);
         setVerified(false);
@@ -76,6 +88,7 @@ export const AuthStateProvider = ({ children }) => {
         verified,
         isAdmin,
         location,
+        setLocation,
         userId,
         handleLogin,
         handleLogout,
