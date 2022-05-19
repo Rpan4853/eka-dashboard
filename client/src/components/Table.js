@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../UserContext";
 import Row from "./Row";
 import { Button } from "react-bootstrap";
 
 const Table = ({ categories, rows, columns }) => {
+  const { userId } = useContext(UserContext);
   const [tableRows, setTableRows] = useState(rows);
 
   const addRow = () => {

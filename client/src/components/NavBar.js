@@ -5,8 +5,15 @@ import { Navbar, Container, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const NavBar = () => {
-  const { email, verified, handleLogin, handleLogout } =
-    useContext(UserContext);
+  const {
+    email,
+    verified,
+    isAdmin,
+    location,
+    userId,
+    handleLogin,
+    handleLogout,
+  } = useContext(UserContext);
 
   return (
     <Navbar bg="light" sticky="top">
@@ -18,7 +25,9 @@ const NavBar = () => {
             alt="logo"
           />
         </Navbar.Brand>
-        <Navbar.Text>{email}</Navbar.Text>
+        <Navbar.Text>{`${email} (${
+          isAdmin ? "Admin" : "Trainer"
+        })`}</Navbar.Text>
         {!verified ? (
           <Button variant="primary" onClick={handleLogin}>
             Log In

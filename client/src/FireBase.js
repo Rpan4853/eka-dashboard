@@ -28,6 +28,9 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider);
 export const AuthStateProvider = ({ children }) => {
   const [email, setEmail] = useState(null);
   const [verified, setVerified] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -45,6 +48,17 @@ export const AuthStateProvider = ({ children }) => {
     signInWithGoogle().then((result) => {
       setEmail(result.user.email);
       setVerified(result.user.emailVerified);
+      fetch("/api/user", {
+        method: "POST",
+        body: JSON.stringify({ email: result.user.email }),
+        headers: new Headers({ "Content-Type": "application/json" }),
+      }).then((resp) => {
+        resp.json().then((data) => {
+          setIsAdmin(data.admin);
+          setLocation(data.location);
+          setUserId(data.id);
+        });
+      });
     });
   };
 
@@ -57,7 +71,15 @@ export const AuthStateProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ email, verified, handleLogin, handleLogout }}
+      value={{
+        email,
+        verified,
+        isAdmin,
+        location,
+        userId,
+        handleLogin,
+        handleLogout,
+      }}
     >
       {children}
     </UserContext.Provider>
