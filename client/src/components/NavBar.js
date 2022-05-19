@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../../UserContext";
+import { UserContext } from "../UserContext";
 import "./modules.css";
 import { Navbar, Container, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";

@@ -9,7 +9,7 @@ const Calendar = ({ setWeek, week }) => {
   const [startDate, endDate] = week;
 
   const isMonday = (date) => {
-    return date.getDay() == 1;
+    return date.getDay() === 1;
   };
 
   const showCalendar = (e) => {
