@@ -5,10 +5,9 @@ import { Button } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import "./modules.css";
 
-const Calendar = ({ setWeek, week }) => {
+const Calendar = ({ setStartDate, setEndDate, startDate, endDate }) => {
   const { isAdmin } = useContext(UserContext);
-  const [isOpen, setIsOpen] = useState(week[0] && week[1] ? false : true); // have open if start and end date dont exist
-  const [startDate, endDate] = week;
+  const [isOpen, setIsOpen] = useState(startDate && endDate ? false : true); // have open if start and end date dont exist
 
   const isMonday = (date) => {
     return date.getDay() === 1;
@@ -42,24 +41,14 @@ const Calendar = ({ setWeek, week }) => {
             <DatePicker
               startDate={startDate || new Date()}
               endDate={endDate}
-              filterDate={isMonday}
               selectsRange
-              selectsDisabledDaysInRange
               inline
               onChange={(dates) => {
                 const [start, end] = dates;
+                setStartDate(start);
+                setEndDate(end);
                 if (end) {
-                  setWeek([
-                    start,
-                    new Date(
-                      end.getFullYear(),
-                      end.getMonth(),
-                      end.getDate() + 5
-                    ),
-                  ]);
                   setIsOpen(false); //let admin finish picking range
-                } else {
-                  setWeek([start, end]);
                 }
               }}
             />
@@ -70,14 +59,14 @@ const Calendar = ({ setWeek, week }) => {
               inline
               onChange={(date) => {
                 setIsOpen(false);
-                setWeek([
-                  date,
+                setStartDate(date);
+                setEndDate(
                   new Date(
                     date.getFullYear(),
                     date.getMonth(),
                     date.getDate() + 5
-                  ),
-                ]);
+                  )
+                );
               }}
             />
           )}

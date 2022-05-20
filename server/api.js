@@ -7,7 +7,7 @@ router.get("/rows", (req, res) => {
   Row.find(
     {
       userId: req.query.userId,
-      weekStartDate: req.query.weekStartDate,
+      startDate: { $gte: req.query.startDate, $lte: req.query.endDate }, //in date range
       tableType: req.query.tableType,
     },
     (error, rows) => {
@@ -28,7 +28,7 @@ router.post("/rows", (req, res) => {
   Row.create({
     userId: req.body.userId,
     data: req.body.data,
-    weekStartDate: req.body.weekStartDate,
+    startDate: req.body.startDate,
     tableType: req.body.tableType,
   })
     .then((event) => {

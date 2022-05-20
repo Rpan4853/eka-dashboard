@@ -3,22 +3,23 @@ import { UserContext } from "../UserContext";
 import Row from "./Row";
 import { Button } from "react-bootstrap";
 
-const Table = ({ categories, columns, tableType }) => {
-  const { userId, weekStartDate } = useContext(UserContext);
+const Table = ({ startDate, endDate, categories, columns, tableType }) => {
+  const { userId } = useContext(UserContext);
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
-    if (weekStartDate && userId) {
+    if (startDate && userId) {
       fetch(
         "/api/rows?" +
           new URLSearchParams({
             userId: userId,
-            weekStartDate: weekStartDate,
+            startDate: startDate,
+            endDate: endDate,
             tableType: tableType,
           })
       ).then((resp) => resp.json().then((data) => setTableRows(data)));
     }
-  }, [weekStartDate, userId]);
+  }, [startDate, userId]);
 
   const addRow = () => {
     const newRow = new Array(columns).fill(undefined);
@@ -27,7 +28,7 @@ const Table = ({ categories, columns, tableType }) => {
       body: JSON.stringify({
         userId: userId,
         data: newRow,
-        weekStartDate: weekStartDate,
+        startDate: startDate,
         tableType: tableType,
       }),
       headers: new Headers({ "Content-Type": "application/json" }),

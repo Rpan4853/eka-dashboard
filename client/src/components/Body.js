@@ -6,17 +6,22 @@ import { Alert } from "react-bootstrap";
 
 const Body = () => {
   const { verified, location, isAdmin } = useContext(UserContext);
-  const [week, setWeek] = useState([null, null]);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  //   const [week, setWeek] = useState([null, null]);
 
   useEffect(() => {
     const localStartDate = localStorage.getItem("startDate");
     const localEndDate = localStorage.getItem("endDate");
     if (localStartDate && localEndDate) {
       try {
-        setWeek([
-          new Date(JSON.parse(localStartDate)),
-          new Date(JSON.parse(localEndDate)),
-        ]);
+        setStartDate(new Date(JSON.parse(localStartDate)));
+        setEndDate(new Date(JSON.parse(localEndDate)));
+        // setWeek([
+
+        //   new Date(JSON.parse(localStartDate)),
+        //   new Date(JSON.parse(localEndDate)),
+        // ]);
       } catch (err) {
         console.log(err);
       }
@@ -24,11 +29,11 @@ const Body = () => {
   }, []);
 
   useEffect(() => {
-    if (week[0]) {
-      localStorage.setItem("startDate", JSON.stringify(week[0]));
-      localStorage.setItem("endDate", JSON.stringify(week[1]));
+    if (startDate) {
+      localStorage.setItem("startDate", JSON.stringify(startDate));
+      localStorage.setItem("endDate", JSON.stringify(endDate));
     }
-  }, [week]);
+  }, [startDate, endDate]);
 
   const tableSetUps = [
     {
@@ -60,7 +65,12 @@ const Body = () => {
     <>
       {verified ? (
         location || isAdmin ? ( // admin does not need to choose location
-          <Calendar setWeek={setWeek} week={week} />
+          <Calendar
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+            startDate={startDate}
+            endDate={endDate}
+          />
         ) : (
           <Alert variant="danger">
             <Alert.Heading>Please select your location!</Alert.Heading>
@@ -77,10 +87,11 @@ const Body = () => {
         </Alert>
       )}
       {tableSetUps.map((table, index) => {
-        if (verified && week[0] && week[1] && (location || isAdmin)) {
+        if (verified && startDate && endDate && (location || isAdmin)) {
           return (
             <Table
-              weekStartDate={week[0]}
+              startDate={startDate}
+              endDate={endDate}
               categories={table.categories}
               columns={table.columns}
               tableType={index}

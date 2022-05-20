@@ -4,7 +4,7 @@ const RowSchema = new mongoose.Schema(
   {
     userId: mongoose.ObjectId,
     data: Array,
-    weekStartDate: Date,
+    startDate: Date,
     tableType: Number,
   },
   {
