@@ -61,6 +61,21 @@ router.delete("/rows/:rowObjId", (req, res) => {
   });
 });
 
+// Gets all non-admin users with userId filter and location filter if given through query params
+router.get("/users", (req, res) => {
+  const filter = { admin: false };
+  if (req.query.location) {
+    filter.location = req.query.location;
+  }
+  if (req.query.userId) {
+    filter._id = req.query.userId;
+  }
+
+  User.find(filter, (err, users) => {
+    res.send(users);
+  });
+});
+
 // Creates a User document if email does not exist
 router.put("/user", (req, res) => {
   User.findOneAndUpdate(
@@ -83,6 +98,17 @@ router.put("/user", (req, res) => {
       }
     }
   );
+});
+
+// Gets all admin users
+router.get("/admins", (req, res) => {
+  User.find({ admin: true }, (error, admins) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(admins);
+    }
+  });
 });
 
 router.all("*", (req, res) => {
