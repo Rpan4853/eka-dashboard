@@ -7,8 +7,7 @@ import "./modules.css";
 
 const Calendar = ({ setWeek, week }) => {
   const { isAdmin } = useContext(UserContext);
-
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(week[0] && week[1] ? false : true); // have open if start and end date dont exist
   const [startDate, endDate] = week;
 
   const isMonday = (date) => {
@@ -26,33 +25,62 @@ const Calendar = ({ setWeek, week }) => {
         className="shadow-none"
         variant={isOpen ? "outline-danger" : "outline-primary"}
         onClick={showCalendar}
-        disabled={!startDate}
+        disabled={!startDate || !endDate}
       >
-        {!startDate | isOpen
-          ? !startDate
-            ? "Choose Week"
+        {(!startDate || !endDate) | isOpen
+          ? !startDate || !endDate
+            ? isAdmin
+              ? "Choose Week(s)"
+              : "Choose Week"
             : "Cancel"
           : `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`}
       </Button>
 
       {isOpen | !startDate ? (
         <>
-          <DatePicker
-            onChange={(date) => {
-              setIsOpen(false);
-
-              setWeek([
-                date,
-                new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate() + 5
-                ),
-              ]);
-            }}
-            filterDate={isMonday}
-            inline
-          />
+          {isAdmin ? ( // admin calendar can select week ranges
+            <DatePicker
+              startDate={startDate || new Date()}
+              endDate={endDate}
+              filterDate={isMonday}
+              selectsRange
+              selectsDisabledDaysInRange
+              inline
+              onChange={(dates) => {
+                const [start, end] = dates;
+                if (end) {
+                  setWeek([
+                    start,
+                    new Date(
+                      end.getFullYear(),
+                      end.getMonth(),
+                      end.getDate() + 5
+                    ),
+                  ]);
+                  setIsOpen(false); //let admin finish picking range
+                } else {
+                  setWeek([start, end]);
+                }
+              }}
+            />
+          ) : (
+            <DatePicker
+              selected={startDate}
+              filterDate={isMonday}
+              inline
+              onChange={(date) => {
+                setIsOpen(false);
+                setWeek([
+                  date,
+                  new Date(
+                    date.getFullYear(),
+                    date.getMonth(),
+                    date.getDate() + 5
+                  ),
+                ]);
+              }}
+            />
+          )}
         </>
       ) : null}
     </div>

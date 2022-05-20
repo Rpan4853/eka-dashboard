@@ -59,7 +59,7 @@ const Body = () => {
   return (
     <>
       {verified ? (
-        location ? (
+        location || isAdmin ? ( // admin does not need to choose location
           <Calendar setWeek={setWeek} week={week} />
         ) : (
           <Alert variant="danger">
@@ -77,7 +77,7 @@ const Body = () => {
         </Alert>
       )}
       {tableSetUps.map((table, index) => {
-        if (verified && week[0] && (location || isAdmin)) {
+        if (verified && week[0] && week[1] && (location || isAdmin)) {
           return (
             <Table
               weekStartDate={week[0]}
