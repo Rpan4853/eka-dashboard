@@ -6,28 +6,29 @@ import { Alert } from "react-bootstrap";
 
 const Body = () => {
   const { verified, location, isAdmin } = useContext(UserContext);
-  let startDate = JSON.parse(localStorage.getItem("startDate"));
-  let endDate = JSON.parse(localStorage.getItem("endDate"));
-  let localWeek = [null, null];
-  if (startDate && endDate) {
-    localWeek = [new Date(startDate), new Date(endDate)];
-  }
-
-  const [week, setWeek] = useState(localWeek);
+  const [week, setWeek] = useState([null, null]);
 
   useEffect(() => {
-    localStorage.setItem("startDate", JSON.stringify(week[0]));
-    localStorage.setItem("endDate", JSON.stringify(week[1]));
-  }, [week]);
-
-  useEffect(() => {
-    startDate = JSON.parse(localStorage.getItem("startDate"));
-    endDate = JSON.parse(localStorage.getItem("endDate"));
-    if (startDate && endDate) {
-      localWeek = [new Date(startDate), new Date(endDate)];
-      setWeek(localWeek);
+    const localStartDate = localStorage.getItem("startDate");
+    const localEndDate = localStorage.getItem("endDate");
+    if (localStartDate && localEndDate) {
+      try {
+        setWeek([
+          new Date(JSON.parse(localStartDate)),
+          new Date(JSON.parse(localEndDate)),
+        ]);
+      } catch (err) {
+        console.log(err);
+      }
     }
   }, []);
+
+  useEffect(() => {
+    if (week[0]) {
+      localStorage.setItem("startDate", JSON.stringify(week[0]));
+      localStorage.setItem("endDate", JSON.stringify(week[1]));
+    }
+  }, [week]);
 
   const tableSetUps = [
     {

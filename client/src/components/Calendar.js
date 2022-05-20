@@ -40,6 +40,7 @@ const Calendar = ({ setWeek, week }) => {
           <DatePicker
             onChange={(date) => {
               setIsOpen(false);
+
               setWeek([
                 date,
                 new Date(
