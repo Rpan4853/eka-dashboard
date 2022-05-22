@@ -43,7 +43,6 @@ const Body = () => {
         actualStart.getDate() + 1
       );
     }
-
     let startDates = [];
     for (let date = actualStart; date <= end; ) {
       startDates.push(date);
@@ -99,7 +98,70 @@ const Body = () => {
           </p>
         </Alert>
       )}
-      {tableSetUps.map((table, index) => {
+      {verified &&
+      startDate &&
+      endDate &&
+      (location || (isAdmin && filterLocations.length > 0))
+        ? !isAdmin
+          ? tableSetUps.map((table, index) => {
+              if (
+                verified &&
+                startDate &&
+                endDate &&
+                (location || (isAdmin && filterLocations.length > 0))
+              ) {
+                return (
+                  <Table
+                    userId={userId}
+                    startDate={startDate}
+                    endDate={endDate}
+                    categories={table.categories}
+                    columns={table.columns}
+                    tableType={index}
+                  />
+                );
+              }
+            })
+          : getStartDates(startDate, endDate).map((start) => {
+              const end = new Date(
+                start.getFullYear(),
+                start.getMonth(),
+                start.getDate() + 5
+              );
+              return (
+                <>
+                  {`${start} - ${end}`}
+                  {Object.keys(locationTrainersMap).map((loc) => {
+                    return (
+                      <>
+                        <h3>{loc}</h3>
+                        {locationTrainersMap[loc].map((user) => {
+                          return (
+                            <>
+                              <h4>{user.email}</h4>
+                              {tableSetUps.map((table, index) => {
+                                return (
+                                  <Table
+                                    userId={user.id}
+                                    startDate={start}
+                                    endDate={end}
+                                    categories={table.categories}
+                                    columns={table.columns}
+                                    tableType={index}
+                                  />
+                                );
+                              })}
+                            </>
+                          );
+                        })}
+                      </>
+                    );
+                  })}
+                </>
+              );
+            })
+        : null}
+      {/* {!isAdmin? (tableSetUps.map((table, index) => {
         if (
           verified &&
           startDate &&
@@ -117,7 +179,22 @@ const Body = () => {
             />
           );
         }
-      })}
+      })):(
+          getStartDates(startDate, endDate).map(start=>{
+              return filterLocations.map(loc =>{
+                  return locationTrainersMap.loc.map(user =>{
+                      return tableSetUps.map((table, index) =>{
+                        return <Table userId = {user.id} startDate = {start} endDate = {new Date(
+                            start.getFullYear(),
+                            start.getMonth(),
+                            start.getDate() + 5
+                          )} categories = {table.categories} columns = {table.columns} tableType = {index}/>
+                      })
+                      
+                  })
+              })
+          })
+      )} */}
     </>
   );
 };

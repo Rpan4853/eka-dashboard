@@ -71,7 +71,7 @@ router.get("/users", (req, res) => {
   User.find(filter, (err, users) => {
     res.send(
       users.map((user) => {
-        return { userId: user._id, email: user.email, location: user.location };
+        return { id: user._id, email: user.email, location: user.location };
       })
     );
   });
