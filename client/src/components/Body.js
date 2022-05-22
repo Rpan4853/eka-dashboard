@@ -108,7 +108,7 @@ const Body = () => {
         !isAdmin || Object.keys(locationTrainersMap).length > 0 ? (
           <Tabs fill justify defaultActiveKey="overview">
             <Tab eventKey="overview" title="Overview">
-              <Overview />
+              <Overview locationTrainersMap={locationTrainersMap} />
             </Tab>
             <Tab eventKey="data" title="Data">
               {getStartDates(startDate, endDate).map((start) => {
