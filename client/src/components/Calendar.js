@@ -24,9 +24,7 @@ const Calendar = ({ setStartDate, setEndDate, startDate, endDate }) => {
       >
         {(!startDate || !endDate) | isOpen
           ? !startDate || !endDate
-            ? isAdmin
-              ? "Choose Week(s)"
-              : "Choose Week"
+            ? "Choose Week(s)"
             : "Cancel"
           : `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`}
       </Button>

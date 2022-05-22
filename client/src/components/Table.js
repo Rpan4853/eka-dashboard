@@ -71,7 +71,7 @@ const Table = ({
               key={row.id}
               rowObjId={row.id}
               row={row.data}
-              rowIndex={rowIndex}
+              rowIndex={rowIndex + 1}
               deleteRow={deleteRow}
             />
           ))}

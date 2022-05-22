@@ -4,24 +4,25 @@ const Row = require("./models/Row");
 const User = require("./models/User");
 
 router.get("/rows", (req, res) => {
-  Row.find(
-    {
-      userId: req.query.userId,
-      startDate: req.query.startDate, //in date range
-      tableType: req.query.tableType,
-    },
-    (error, rows) => {
-      if (error) {
-        console.log(error);
-      } else {
-        res.send(
-          rows.map((row) => {
-            return { id: row._id, data: row.data };
-          })
-        );
-      }
+  const filter = {
+    userId: req.query.userId,
+    startDate: req.query.startDate,
+    tableType: req.query.tableType,
+  };
+  if (req.query.endDate) {
+    filter.startDate = { $gte: req.query.startDate, $lte: req.query.endDate }; //check if in date range
+  }
+  Row.find(filter, (error, rows) => {
+    if (error) {
+      console.log(error);
+    } else {
+      res.send(
+        rows.map((row) => {
+          return { id: row._id, data: row.data };
+        })
+      );
     }
-  );
+  });
 });
 
 router.post("/rows", (req, res) => {

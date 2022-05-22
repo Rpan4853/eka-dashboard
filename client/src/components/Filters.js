@@ -13,6 +13,7 @@ const Filters = ({
   filterLocations,
   setFilterLocations,
   setLocationTrainersMap,
+  setTrainers,
 }) => {
   const { location, isAdmin } = useContext(UserContext);
 
@@ -42,6 +43,7 @@ const Filters = ({
       fetch(`/api/users?${createArrayQuery(filterLocations, "location")}`).then(
         (resp) =>
           resp.json().then((users) => {
+            setTrainers(users);
             setLocationTrainersMap(createMapping(users));
           })
       );

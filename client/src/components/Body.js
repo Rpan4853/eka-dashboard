@@ -13,6 +13,7 @@ const Body = () => {
   const [endDate, setEndDate] = useState(null);
   const [filterLocations, setFilterLocations] = useState([]);
   const [locationTrainersMap, setLocationTrainersMap] = useState({});
+  const [trainers, setTrainers] = useState([]);
 
   useEffect(() => {
     const localStartDate = localStorage.getItem("startDate");
@@ -91,6 +92,7 @@ const Body = () => {
           filterLocations={filterLocations}
           setFilterLocations={setFilterLocations}
           setLocationTrainersMap={setLocationTrainersMap}
+          setTrainers={setTrainers}
         />
       ) : (
         <Alert variant="danger">
@@ -106,9 +108,14 @@ const Body = () => {
       endDate &&
       (location || (isAdmin && filterLocations.length > 0)) ? (
         !isAdmin || Object.keys(locationTrainersMap).length > 0 ? (
-          <Tabs fill justify defaultActiveKey="overview">
+          <Tabs fill justify defaultActiveKey="overview" unmountOnExit>
             <Tab eventKey="overview" title="Overview">
-              <Overview locationTrainersMap={locationTrainersMap} />
+              <Overview
+                startDate={startDate}
+                endDate={endDate}
+                trainers={trainers}
+                locationTrainersMap={locationTrainersMap}
+              />
             </Tab>
             <Tab eventKey="data" title="Data">
               {getStartDates(startDate, endDate).map((start) => {
