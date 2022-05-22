@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
 import Table from "./Table";
 import Filters from "./Filters";
-import { Alert } from "react-bootstrap";
+import { Alert, Container, Row, Col } from "react-bootstrap";
+import "./modules.css";
 
 const Body = () => {
   const { userId, verified, location, isAdmin } = useContext(UserContext);
@@ -101,9 +102,10 @@ const Body = () => {
       {verified &&
       startDate &&
       endDate &&
-      (location || (isAdmin && filterLocations.length > 0))
-        ? !isAdmin
-          ? tableSetUps.map((table, index) => {
+      (location || (isAdmin && filterLocations.length > 0)) ? (
+        !isAdmin ? (
+          <Container className="User-container border border-success p-2 mb-2 border-opacity-50 rounded-3 bg-white">
+            {tableSetUps.map((table, index) => {
               if (
                 verified &&
                 startDate &&
@@ -121,80 +123,59 @@ const Body = () => {
                   />
                 );
               }
-            })
-          : getStartDates(startDate, endDate).map((start) => {
-              const end = new Date(
-                start.getFullYear(),
-                start.getMonth(),
-                start.getDate() + 5
-              );
-              return (
-                <>
-                  {`${start} - ${end}`}
-                  {Object.keys(locationTrainersMap).map((loc) => {
-                    return (
-                      <>
-                        <h3>{loc}</h3>
-                        {locationTrainersMap[loc].map((user) => {
-                          return (
-                            <>
-                              <h4>{user.email}</h4>
-                              {tableSetUps.map((table, index) => {
-                                return (
-                                  <Table
-                                    userId={user.id}
-                                    startDate={start}
-                                    endDate={end}
-                                    categories={table.categories}
-                                    columns={table.columns}
-                                    tableType={index}
-                                  />
-                                );
-                              })}
-                            </>
-                          );
-                        })}
-                      </>
-                    );
-                  })}
-                </>
-              );
-            })
-        : null}
-      {/* {!isAdmin? (tableSetUps.map((table, index) => {
-        if (
-          verified &&
-          startDate &&
-          endDate &&
-          (location || (isAdmin && filterLocations.length > 0))
-        ) {
-          return (
-            <Table
-              userId={userId}
-              startDate={startDate}
-              endDate={endDate}
-              categories={table.categories}
-              columns={table.columns}
-              tableType={index}
-            />
-          );
-        }
-      })):(
-          getStartDates(startDate, endDate).map(start=>{
-              return filterLocations.map(loc =>{
-                  return locationTrainersMap.loc.map(user =>{
-                      return tableSetUps.map((table, index) =>{
-                        return <Table userId = {user.id} startDate = {start} endDate = {new Date(
-                            start.getFullYear(),
-                            start.getMonth(),
-                            start.getDate() + 5
-                          )} categories = {table.categories} columns = {table.columns} tableType = {index}/>
-                      })
-                      
-                  })
-              })
+            })}
+          </Container>
+        ) : Object.keys(locationTrainersMap).length > 0 ? (
+          getStartDates(startDate, endDate).map((start) => {
+            const end = new Date(
+              start.getFullYear(),
+              start.getMonth(),
+              start.getDate() + 5
+            );
+            return (
+              <Container className="Body-container">
+                <h3 className="text-center">{`${start.toDateString()} - ${end.toDateString()}`}</h3>
+                {Object.keys(locationTrainersMap).map((loc) => {
+                  return (
+                    <Container className="Location-container border border-success p-2 mb-2 border-opacity-50 bg-success p-2 text-dark bg-opacity-10">
+                      <h4 className="text-center">{loc}</h4>
+                      {locationTrainersMap[loc].map((user) => {
+                        return (
+                          <Container className="User-container border border-success p-2 mb-2 border-opacity-50 rounded-3 bg-white">
+                            <h6 className="text-center ">{`${user.name.toUpperCase()} | ${
+                              user.email
+                            }`}</h6>
+                            <hr />
+                            {tableSetUps.map((table, index) => {
+                              return (
+                                <Table
+                                  userId={user.id}
+                                  startDate={start}
+                                  endDate={end}
+                                  categories={table.categories}
+                                  columns={table.columns}
+                                  tableType={index}
+                                />
+                              );
+                            })}
+                          </Container>
+                        );
+                      })}
+                    </Container>
+                  );
+                })}
+              </Container>
+            );
           })
-      )} */}
+        ) : (
+          <Alert variant="danger">
+            <Alert.Heading>
+              No data found for the location(s)/week(s) chosen!
+            </Alert.Heading>
+            <p>Please try again with new filters.</p>
+          </Alert>
+        )
+      ) : null}
     </>
   );
 };

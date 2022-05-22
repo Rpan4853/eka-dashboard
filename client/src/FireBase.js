@@ -27,6 +27,7 @@ export const signInWithGoogle = () => signInWithPopup(auth, provider);
 
 export const AuthStateProvider = ({ children }) => {
   const [email, setEmail] = useState(null);
+  const [name, setName] = useState("");
   const [verified, setVerified] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [location, setLocation] = useState(null);
@@ -35,6 +36,7 @@ export const AuthStateProvider = ({ children }) => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        setName(user.displayName);
         setEmail(user.email);
         setVerified(user.emailVerified);
         //get more info on user from database upon refresh
@@ -58,11 +60,15 @@ export const AuthStateProvider = ({ children }) => {
 
   const handleLogin = () => {
     signInWithGoogle().then((result) => {
+      setName(result.user.displayName);
       setEmail(result.user.email);
       setVerified(result.user.emailVerified);
       fetch("/api/user", {
         method: "PUT",
-        body: JSON.stringify({ email: result.user.email }),
+        body: JSON.stringify({
+          email: result.user.email,
+          name: result.user.displayName,
+        }),
         headers: new Headers({ "Content-Type": "application/json" }),
       }).then((resp) => {
         resp.json().then((data) => {
@@ -81,6 +87,7 @@ export const AuthStateProvider = ({ children }) => {
     setIsAdmin(false);
     setLocation(null);
     setUserId(null);
+    setName("");
     localStorage.removeItem("startDate");
     localStorage.removeItem("endDate");
     return res;
@@ -89,6 +96,7 @@ export const AuthStateProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
+        name,
         email,
         verified,
         isAdmin,

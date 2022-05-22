@@ -71,7 +71,12 @@ router.get("/users", (req, res) => {
   User.find(filter, (err, users) => {
     res.send(
       users.map((user) => {
-        return { id: user._id, email: user.email, location: user.location };
+        return {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          location: user.location,
+        };
       })
     );
   });
@@ -82,6 +87,7 @@ router.put("/user", (req, res) => {
   User.findOneAndUpdate(
     { email: req.body.email },
     {
+      name: req.body.name,
       email: req.body.email,
       admin: req.body.admin,
       location: req.body.location,

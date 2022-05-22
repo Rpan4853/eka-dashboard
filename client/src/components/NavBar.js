@@ -12,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const NavBar = () => {
   const {
+    name,
     email,
     verified,
     isAdmin,
@@ -50,12 +51,6 @@ const NavBar = () => {
           />
         </Navbar.Brand>
 
-        {verified ? (
-          <Navbar.Text>{`${email} (${
-            isAdmin ? "Admin" : "Trainer"
-          })`}</Navbar.Text>
-        ) : null}
-
         {!isAdmin && verified ? ( // admin does not need to select location
           <DropdownButton
             variant="success"
@@ -70,6 +65,12 @@ const NavBar = () => {
               </Dropdown.Item>
             ))}
           </DropdownButton>
+        ) : null}
+
+        {verified ? (
+          <Navbar.Text>{`${name.toUpperCase()} | ${email} (${
+            isAdmin ? "Admin" : "Trainer"
+          })`}</Navbar.Text>
         ) : null}
 
         {!verified ? (

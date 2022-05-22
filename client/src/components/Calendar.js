@@ -21,7 +21,7 @@ const Calendar = ({ setStartDate, setEndDate, startDate, endDate }) => {
   return (
     <div className="Calendar-container">
       <Button
-        className="shadow-none"
+        className="Button-container shadow-none d-grid gap-2 col-4 mx-auto"
         variant={isOpen ? "outline-danger" : "outline-primary"}
         onClick={showCalendar}
         disabled={!startDate || !endDate}

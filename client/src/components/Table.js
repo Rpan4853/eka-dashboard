@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "../UserContext";
+import React, { useState, useEffect } from "react";
 import Row from "./Row";
-import { Button } from "react-bootstrap";
+import { Button, Container, Table as BootstrapTable } from "react-bootstrap";
 
 const Table = ({
   userId,
@@ -11,7 +10,6 @@ const Table = ({
   columns,
   tableType,
 }) => {
-  const { isAdmin } = useContext(UserContext);
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
@@ -58,8 +56,8 @@ const Table = ({
   };
 
   return (
-    <>
-      <table className="table align-middle">
+    <Container className="Table-container">
+      <BootstrapTable>
         <thead className="table-light">
           <tr>
             {categories.map((category) => (
@@ -78,11 +76,15 @@ const Table = ({
             />
           ))}
         </tbody>
-      </table>
-      <Button variant="primary" onClick={addRow}>
+      </BootstrapTable>
+      <Button
+        className="d-grid gap-2 col-6 mx-auto"
+        variant="outline-secondary"
+        onClick={addRow}
+      >
         Add Row
       </Button>
-    </>
+    </Container>
   );
 };
 

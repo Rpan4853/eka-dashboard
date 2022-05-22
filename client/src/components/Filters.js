@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { UserContext } from "../UserContext";
 import Calendar from "./Calendar";
-import { Alert, Form } from "react-bootstrap";
+import { Alert, Form, Row, Col, Container } from "react-bootstrap";
 import Select from "react-select";
+import "./modules.css";
 
 const Filters = ({
   startDate,
@@ -60,39 +61,47 @@ const Filters = ({
   ];
 
   return (
-    <>
-      {isAdmin ? (
-        <>
-          <Form>
-            <Form.Label>Select Location(s)</Form.Label>
-            <Select
-              options={locationOptions}
-              isMulti
-              onChange={(filtLocations) =>
-                setFilterLocations(filtLocations.map((loc) => loc.value))
-              }
-            />
-          </Form>
-        </>
-      ) : null}
-      {location || (isAdmin && filterLocations.length > 0) ? ( // admin does not need to choose location
-        <Calendar
-          setStartDate={setStartDate}
-          setEndDate={setEndDate}
-          startDate={startDate}
-          endDate={endDate}
-        />
-      ) : (
-        <>
-          {!isAdmin ? (
-            <Alert variant="danger">
-              <Alert.Heading>Please select your location!</Alert.Heading>
-              <p>Select from the dropdown on the top of the page</p>
-            </Alert>
-          ) : null}
-        </>
-      )}
-    </>
+    <Container className="Filter-container">
+      <Row>
+        {isAdmin ? (
+          <Col xs={6}>
+            <Form>
+              <Form.Label>Select Location(s):</Form.Label>
+              <Select
+                options={locationOptions}
+                isMulti
+                onChange={(filtLocations) =>
+                  setFilterLocations(filtLocations.map((loc) => loc.value))
+                }
+              />
+            </Form>
+          </Col>
+        ) : null}
+        <Col className="align-self-center">
+          {location || (isAdmin && filterLocations.length > 0) ? ( // admin does not need to choose location
+            <div className="Calendar-container">
+              {isAdmin ? <Form.Label>Select Time Range:</Form.Label> : null}
+
+              <Calendar
+                setStartDate={setStartDate}
+                setEndDate={setEndDate}
+                startDate={startDate}
+                endDate={endDate}
+              />
+            </div>
+          ) : (
+            <>
+              {!isAdmin ? (
+                <Alert variant="danger">
+                  <Alert.Heading>Please select your location!</Alert.Heading>
+                  <p>Select from the dropdown on the top of the page</p>
+                </Alert>
+              ) : null}
+            </>
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

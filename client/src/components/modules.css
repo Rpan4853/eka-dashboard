@@ -5,3 +5,31 @@
 .Calendar-container {
   text-align: center;
 }
+
+.Filter-container {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+.User-container {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+.Table-container {
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+.Button-container {
+  margin-bottom: 1vh;
+}
+
+.Location-container {
+  margin-top: 3vh;
+  margin-bottom: 5vh;
+}
+
+.Body-container {
+  margin-top: 3vh;
+}
