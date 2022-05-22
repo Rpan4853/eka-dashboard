@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const path = require("path");
 const Row = require("./models/Row");
 const User = require("./models/User");
 
@@ -121,7 +122,9 @@ router.get("/admins", (req, res) => {
 
 router.all("*", (req, res) => {
   console.log(`API route not found: ${req.method} ${req.url}`);
-  res.status(404).send({ msg: "API route not found" });
+  res.sendFile(
+    path.join(path.basename(path.dirname(__dirname)), "client/build/index.html")
+  );
 });
 
 module.exports = router;
