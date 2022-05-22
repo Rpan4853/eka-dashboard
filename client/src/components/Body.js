@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
-import Calendar from "./Calendar";
 import Table from "./Table";
+import Filters from "./Filters";
 import { Alert } from "react-bootstrap";
 
 const Body = () => {
-  const { verified, location, isAdmin } = useContext(UserContext);
+  const { userId, verified, location, isAdmin } = useContext(UserContext);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  //   const [week, setWeek] = useState([null, null]);
+  const [filterLocations, setFilterLocations] = useState([]);
+  const [locationTrainersMap, setLocationTrainersMap] = useState({});
 
   useEffect(() => {
     const localStartDate = localStorage.getItem("startDate");
@@ -17,11 +18,6 @@ const Body = () => {
       try {
         setStartDate(new Date(JSON.parse(localStartDate)));
         setEndDate(new Date(JSON.parse(localEndDate)));
-        // setWeek([
-
-        //   new Date(JSON.parse(localStartDate)),
-        //   new Date(JSON.parse(localEndDate)),
-        // ]);
       } catch (err) {
         console.log(err);
       }
@@ -34,6 +30,27 @@ const Body = () => {
       localStorage.setItem("endDate", JSON.stringify(endDate));
     }
   }, [startDate, endDate]);
+
+  const getStartDates = (start, end) => {
+    let actualStart = start; //make sure the first start date is a monday
+    for (let i = 0; i < 7; i++) {
+      if (actualStart.getDay() === 1 || actualStart > end) {
+        break;
+      }
+      actualStart = new Date(
+        actualStart.getFullYear(),
+        actualStart.getMonth(),
+        actualStart.getDate() + 1
+      );
+    }
+
+    let startDates = [];
+    for (let date = actualStart; date <= end; ) {
+      startDates.push(date);
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7);
+    }
+    return startDates;
+  };
 
   const tableSetUps = [
     {
@@ -64,19 +81,15 @@ const Body = () => {
   return (
     <>
       {verified ? (
-        location || isAdmin ? ( // admin does not need to choose location
-          <Calendar
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
-            startDate={startDate}
-            endDate={endDate}
-          />
-        ) : (
-          <Alert variant="danger">
-            <Alert.Heading>Please select your location!</Alert.Heading>
-            <p>Select from the dropdown on the top of the page</p>
-          </Alert>
-        )
+        <Filters
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+          startDate={startDate}
+          endDate={endDate}
+          filterLocations={filterLocations}
+          setFilterLocations={setFilterLocations}
+          setLocationTrainersMap={setLocationTrainersMap}
+        />
       ) : (
         <Alert variant="danger">
           <Alert.Heading>Please log in to view dashboard!</Alert.Heading>
@@ -87,9 +100,15 @@ const Body = () => {
         </Alert>
       )}
       {tableSetUps.map((table, index) => {
-        if (verified && startDate && endDate && (location || isAdmin)) {
+        if (
+          verified &&
+          startDate &&
+          endDate &&
+          (location || (isAdmin && filterLocations.length > 0))
+        ) {
           return (
             <Table
+              userId={userId}
               startDate={startDate}
               endDate={endDate}
               categories={table.categories}

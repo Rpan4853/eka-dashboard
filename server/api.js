@@ -7,7 +7,7 @@ router.get("/rows", (req, res) => {
   Row.find(
     {
       userId: req.query.userId,
-      startDate: { $gte: req.query.startDate, $lte: req.query.endDate }, //in date range
+      startDate: req.query.startDate, //in date range
       tableType: req.query.tableType,
     },
     (error, rows) => {
@@ -61,18 +61,19 @@ router.delete("/rows/:rowObjId", (req, res) => {
   });
 });
 
-// Gets all non-admin users with userId filter and location filter if given through query params
+// Gets all non-admin users with location filter if given through query params
 router.get("/users", (req, res) => {
   const filter = { admin: false };
   if (req.query.location) {
     filter.location = req.query.location;
   }
-  if (req.query.userId) {
-    filter._id = req.query.userId;
-  }
 
   User.find(filter, (err, users) => {
-    res.send(users);
+    res.send(
+      users.map((user) => {
+        return { userId: user._id, email: user.email, location: user.location };
+      })
+    );
   });
 });
 

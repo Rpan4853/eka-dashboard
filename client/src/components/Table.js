@@ -3,23 +3,29 @@ import { UserContext } from "../UserContext";
 import Row from "./Row";
 import { Button } from "react-bootstrap";
 
-const Table = ({ startDate, endDate, categories, columns, tableType }) => {
-  const { userId } = useContext(UserContext);
+const Table = ({
+  userId,
+  startDate,
+  endDate,
+  categories,
+  columns,
+  tableType,
+}) => {
+  const { isAdmin } = useContext(UserContext);
   const [tableRows, setTableRows] = useState([]);
 
   useEffect(() => {
-    if (startDate && userId) {
+    if (startDate && endDate && userId) {
       fetch(
         "/api/rows?" +
           new URLSearchParams({
             userId: userId,
             startDate: startDate,
-            endDate: endDate,
             tableType: tableType,
           })
       ).then((resp) => resp.json().then((data) => setTableRows(data)));
     }
-  }, [startDate, userId]);
+  }, [startDate, userId, endDate, tableType]);
 
   const addRow = () => {
     const newRow = new Array(columns).fill(undefined);
