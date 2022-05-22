@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
-import Table from "./Table";
+import TrainerTables from "./TrainerTables";
+import AdminTables from "./AdminTables";
 import Filters from "./Filters";
-import { Alert, Container, Row, Col } from "react-bootstrap";
+import Overview from "./Overview";
+import { Alert, Tabs, Tab, Container } from "react-bootstrap";
 import "./modules.css";
 
 const Body = () => {
@@ -32,26 +34,6 @@ const Body = () => {
     }
   }, [startDate, endDate]);
 
-  const getStartDates = (start, end) => {
-    let actualStart = start; //make sure the first start date is a monday
-    for (let i = 0; i < 7; i++) {
-      if (actualStart.getDay() === 1 || actualStart > end) {
-        break;
-      }
-      actualStart = new Date(
-        actualStart.getFullYear(),
-        actualStart.getMonth(),
-        actualStart.getDate() + 1
-      );
-    }
-    let startDates = [];
-    for (let date = actualStart; date <= end; ) {
-      startDates.push(date);
-      date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7);
-    }
-    return startDates;
-  };
-
   const tableSetUps = [
     {
       categories: [
@@ -79,7 +61,7 @@ const Body = () => {
   ];
 
   return (
-    <>
+    <Container>
       {verified ? (
         <Filters
           setStartDate={setStartDate}
@@ -103,70 +85,30 @@ const Body = () => {
       startDate &&
       endDate &&
       (location || (isAdmin && filterLocations.length > 0)) ? (
-        !isAdmin ? (
-          <Container className="User-container border border-success p-2 mb-2 border-opacity-50 rounded-3 bg-white">
-            {tableSetUps.map((table, index) => {
-              if (
-                verified &&
-                startDate &&
-                endDate &&
-                (location || (isAdmin && filterLocations.length > 0))
-              ) {
-                return (
-                  <Table
-                    userId={userId}
-                    startDate={startDate}
-                    endDate={endDate}
-                    categories={table.categories}
-                    columns={table.columns}
-                    tableType={index}
-                  />
-                );
-              }
-            })}
-          </Container>
-        ) : Object.keys(locationTrainersMap).length > 0 ? (
-          getStartDates(startDate, endDate).map((start) => {
-            const end = new Date(
-              start.getFullYear(),
-              start.getMonth(),
-              start.getDate() + 5
-            );
-            return (
-              <Container className="Body-container">
-                <h3 className="text-center">{`${start.toDateString()} - ${end.toDateString()}`}</h3>
-                {Object.keys(locationTrainersMap).map((loc) => {
-                  return (
-                    <Container className="Location-container border border-success p-2 mb-2 border-opacity-50 bg-success p-2 text-dark bg-opacity-10">
-                      <h4 className="text-center">{loc}</h4>
-                      {locationTrainersMap[loc].map((user) => {
-                        return (
-                          <Container className="User-container border border-success p-2 mb-2 border-opacity-50 rounded-3 bg-white">
-                            <h6 className="text-center ">{`${user.name.toUpperCase()} | ${
-                              user.email
-                            }`}</h6>
-                            <hr />
-                            {tableSetUps.map((table, index) => {
-                              return (
-                                <Table
-                                  userId={user.id}
-                                  startDate={start}
-                                  endDate={end}
-                                  categories={table.categories}
-                                  columns={table.columns}
-                                  tableType={index}
-                                />
-                              );
-                            })}
-                          </Container>
-                        );
-                      })}
-                    </Container>
-                  );
-                })}
-              </Container>
-            );
-          })
+        !isAdmin || Object.keys(locationTrainersMap).length > 0 ? (
+          <Tabs fill justify defaultActiveKey="overview">
+            <Tab eventKey="overview" title="Overview">
+              <Overview />
+            </Tab>
+            <Tab eventKey="data" title="Data">
+              {!isAdmin ? (
+                <TrainerTables
+                  tableSetUps={tableSetUps}
+                  startDate={startDate}
+                  endDate={endDate}
+                  filterLocations={filterLocations}
+                  userId={userId}
+                />
+              ) : (
+                <AdminTables
+                  startDate={startDate}
+                  endDate={endDate}
+                  locationTrainersMap={locationTrainersMap}
+                  tableSetUps={tableSetUps}
+                />
+              )}
+            </Tab>
+          </Tabs>
         ) : (
           <Alert variant="danger">
             <Alert.Heading>
@@ -176,7 +118,7 @@ const Body = () => {
           </Alert>
         )
       ) : null}
-    </>
+    </Container>
   );
 };
 
