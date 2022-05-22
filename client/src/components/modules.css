@@ -23,6 +23,8 @@
 
 .Button-container {
   margin-bottom: 1vh;
+  margin-left: 0.1vw;
+  margin-right: 0.1vw;
 }
 
 .Location-container {
@@ -32,4 +34,13 @@
 
 .Body-container {
   margin-top: 3vh;
+}
+
+.nav-tabs .nav-link {
+  background-color: white !important;
+  color: black !important;
+}
+
+.nav-tabs .nav-link.active {
+  border-bottom: solid 2px white !important;
 }

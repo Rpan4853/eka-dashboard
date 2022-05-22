@@ -9,10 +9,6 @@ const Calendar = ({ setStartDate, setEndDate, startDate, endDate }) => {
   const { isAdmin } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(startDate && endDate ? false : true); // have open if start and end date dont exist
 
-  const isMonday = (date) => {
-    return date.getDay() === 1;
-  };
-
   const showCalendar = (e) => {
     e.preventDefault();
     setIsOpen(!isOpen);
@@ -37,39 +33,20 @@ const Calendar = ({ setStartDate, setEndDate, startDate, endDate }) => {
 
       {isOpen | !startDate ? (
         <>
-          {isAdmin ? ( // admin calendar can select week ranges
-            <DatePicker
-              startDate={startDate || new Date()}
-              endDate={endDate}
-              selectsRange
-              inline
-              onChange={(dates) => {
-                const [start, end] = dates;
-                setStartDate(start);
-                setEndDate(end);
-                if (end) {
-                  setIsOpen(false); //let admin finish picking range
-                }
-              }}
-            />
-          ) : (
-            <DatePicker
-              selected={startDate}
-              filterDate={isMonday}
-              inline
-              onChange={(date) => {
-                setIsOpen(false);
-                setStartDate(date);
-                setEndDate(
-                  new Date(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate() + 5
-                  )
-                );
-              }}
-            />
-          )}
+          <DatePicker
+            startDate={startDate || new Date()}
+            endDate={endDate}
+            selectsRange
+            inline
+            onChange={(dates) => {
+              const [start, end] = dates;
+              setStartDate(start);
+              setEndDate(end);
+              if (end) {
+                setIsOpen(false); //let user finish picking range
+              }
+            }}
+          />
         </>
       ) : null}
     </div>

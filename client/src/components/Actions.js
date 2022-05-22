@@ -13,19 +13,32 @@ const Actions = ({
     <td>
       {canEdit ? (
         <>
-          <Button variant="primary" onClick={saveEditInfo}>
+          <Button
+            className="Button-container"
+            variant="primary"
+            onClick={saveEditInfo}
+          >
             Save
           </Button>
-          <Button variant="danger" onClick={() => setCanEdit(false)}>
+          <Button
+            className="Button-container"
+            variant="danger"
+            onClick={() => setCanEdit(false)}
+          >
             Cancel
           </Button>
         </>
       ) : (
         <>
-          <Button variant="primary" onClick={() => setCanEdit(true)}>
+          <Button
+            className="Button-container"
+            variant="primary"
+            onClick={() => setCanEdit(true)}
+          >
             Edit
           </Button>
           <Button
+            className="Button-container"
             variant="danger"
             onClick={() => deleteRow(rowIndex, rowObjId)}
           >

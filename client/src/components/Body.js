@@ -34,6 +34,26 @@ const Body = () => {
     }
   }, [startDate, endDate]);
 
+  const getStartDates = (start, end) => {
+    let actualStart = start; //make sure the first start date is a monday
+    for (let i = 0; i < 7; i++) {
+      if (actualStart.getDay() === 1 || actualStart > end) {
+        break;
+      }
+      actualStart = new Date(
+        actualStart.getFullYear(),
+        actualStart.getMonth(),
+        actualStart.getDate() + 1
+      );
+    }
+    let startDates = [];
+    for (let date = actualStart; date <= end; ) {
+      startDates.push(date);
+      date = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7);
+    }
+    return startDates;
+  };
+
   const tableSetUps = [
     {
       categories: [
@@ -91,22 +111,33 @@ const Body = () => {
               <Overview />
             </Tab>
             <Tab eventKey="data" title="Data">
-              {!isAdmin ? (
-                <TrainerTables
-                  tableSetUps={tableSetUps}
-                  startDate={startDate}
-                  endDate={endDate}
-                  filterLocations={filterLocations}
-                  userId={userId}
-                />
-              ) : (
-                <AdminTables
-                  startDate={startDate}
-                  endDate={endDate}
-                  locationTrainersMap={locationTrainersMap}
-                  tableSetUps={tableSetUps}
-                />
-              )}
+              {getStartDates(startDate, endDate).map((start) => {
+                const end = new Date(
+                  start.getFullYear(),
+                  start.getMonth(),
+                  start.getDate() + 5
+                );
+                if (isAdmin) {
+                  return (
+                    <AdminTables
+                      start={start}
+                      end={end}
+                      locationTrainersMap={locationTrainersMap}
+                      tableSetUps={tableSetUps}
+                    />
+                  );
+                } else {
+                  return (
+                    <TrainerTables
+                      tableSetUps={tableSetUps}
+                      start={start}
+                      end={end}
+                      filterLocations={filterLocations}
+                      userId={userId}
+                    />
+                  );
+                }
+              })}
             </Tab>
           </Tabs>
         ) : (
