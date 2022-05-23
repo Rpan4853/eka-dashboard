@@ -23,7 +23,7 @@ const Table = ({
           })
       ).then((resp) => resp.json().then((data) => setTableRows(data)));
     }
-  }, [startDate, userId, endDate, tableType]);
+  }, [startDate, endDate, userId]);
 
   const addRow = () => {
     const newRow = new Array(columns).fill(undefined);

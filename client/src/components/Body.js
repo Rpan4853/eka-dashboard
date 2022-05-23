@@ -106,9 +106,16 @@ const Body = () => {
       {verified &&
       startDate &&
       endDate &&
+      userId &&
       (location || (isAdmin && filterLocations.length > 0)) ? (
         !isAdmin || Object.keys(locationTrainersMap).length > 0 ? (
-          <Tabs fill justify defaultActiveKey="overview" unmountOnExit>
+          <Tabs
+            fill
+            justify
+            defaultActiveKey="overview"
+            unmountOnExit
+            mountOnEnter
+          >
             <Tab eventKey="overview" title="Overview">
               <Overview
                 startDate={startDate}

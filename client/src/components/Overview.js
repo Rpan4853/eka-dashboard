@@ -4,6 +4,7 @@ import { Table as BootstrapTable, Container } from "react-bootstrap";
 import OverviewTable from "./OverviewTable";
 
 const Overview = ({ startDate, endDate, trainers, locationTrainersMap }) => {
+  console.log("overview rendred");
   const { userId, isAdmin } = useContext(UserContext);
   const [classesTaught, setClassesTaught] = useState(0);
   const [classesTaken, setClassesTaken] = useState(0);
@@ -55,18 +56,22 @@ const Overview = ({ startDate, endDate, trainers, locationTrainersMap }) => {
   };
 
   useEffect(() => {
-    fetchRowData(0, isAdmin).then((resp) => {
-      resp.json().then((rows) => {
-        setClassesTaught(sumArraysAtIndex(rows, 1));
-        setAttendance(sumArraysAtIndex(rows, 2));
+    console.log("hereee");
+    if (userId) {
+      fetchRowData(0, isAdmin).then((resp) => {
+        resp.json().then((rows) => {
+          console.log(rows);
+          setClassesTaught(sumArraysAtIndex(rows, 1));
+          setAttendance(sumArraysAtIndex(rows, 2));
+        });
       });
-    });
-    fetchRowData(1, isAdmin).then((resp) => {
-      resp.json().then((rows) => {
-        setClassesTaken(sumArraysAtIndex(rows, 1));
+      fetchRowData(1, isAdmin).then((resp) => {
+        resp.json().then((rows) => {
+          setClassesTaken(sumArraysAtIndex(rows, 1));
+        });
       });
-    });
-  });
+    }
+  }, [userId, startDate, endDate, trainers]);
 
   const parseUser = (user) => {
     return `${user.name.toUpperCase()} | ${user.email} `;
