@@ -13,9 +13,9 @@ const AdminTables = ({ start, end, locationTrainersMap, tableSetUps }) => {
             {locationTrainersMap[loc].map((user) => {
               return (
                 <Container className="User-container border border-2 border-warning p-2 mb-2 border-opacity-50 rounded-3 bg-white">
-                  <h6 className="text-center ">{`${user.name.toUpperCase()} | ${
-                    user.email
-                  }`}</h6>
+                  <h6 className="text-center ">{`${
+                    user.name ? `${user.name.toUpperCase()} |` : ""
+                  } ${user.email}`}</h6>
                   <hr />
                   {tableSetUps.map((table, index) => {
                     return (

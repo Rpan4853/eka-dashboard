@@ -65,7 +65,7 @@ const NavBar = () => {
         ) : null}
 
         {verified ? (
-          <Navbar.Text>{`${name.toUpperCase()} | ${email} (${
+          <Navbar.Text>{`${name ? `${name.toUpperCase()} |` : ""}  ${email} (${
             isAdmin ? "Admin" : "Trainer"
           })`}</Navbar.Text>
         ) : null}

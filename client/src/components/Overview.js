@@ -74,7 +74,7 @@ const Overview = ({ startDate, endDate, trainers, locationTrainersMap }) => {
   }, [userId, startDate, endDate, trainers]);
 
   const parseUser = (user) => {
-    return `${user.name.toUpperCase()} | ${user.email} `;
+    return `${user.name ? `${user.name.toUpperCase()} |` : ""} ${user.email} `;
   };
 
   return (
