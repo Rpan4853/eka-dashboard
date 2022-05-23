@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { UserContext } from "../UserContext";
 import "./modules.css";
+import logo from "../eka-logo.png";
 import {
   Navbar,
   Container,
@@ -44,11 +45,7 @@ const NavBar = () => {
     <Navbar bg="light" sticky="top">
       <Container>
         <Navbar.Brand>
-          <img
-            className="NavBar-logo"
-            src="https://ekkadamaur.org/wp-content/uploads/2020/04/cropped-Final-Logo-Options.png"
-            alt="logo"
-          />
+          <img className="NavBar-logo" src={logo} alt="logo" />
         </Navbar.Brand>
 
         {!isAdmin && verified ? ( // admin does not need to select location
