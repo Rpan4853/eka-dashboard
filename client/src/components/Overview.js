@@ -4,7 +4,6 @@ import { Table as BootstrapTable, Container } from "react-bootstrap";
 import OverviewTable from "./OverviewTable";
 
 const Overview = ({ startDate, endDate, trainers, locationTrainersMap }) => {
-  console.log("overview rendred");
   const { userId, isAdmin } = useContext(UserContext);
   const [classesTaught, setClassesTaught] = useState(0);
   const [classesTaken, setClassesTaken] = useState(0);
@@ -56,17 +55,17 @@ const Overview = ({ startDate, endDate, trainers, locationTrainersMap }) => {
   };
 
   useEffect(() => {
-    console.log("hereee");
     if (userId) {
       fetchRowData(0, isAdmin).then((resp) => {
         resp.json().then((rows) => {
-          console.log(rows);
           setClassesTaught(sumArraysAtIndex(rows, 1));
+          sumArraysAtIndex(rows, 2);
           setAttendance(sumArraysAtIndex(rows, 2));
         });
       });
       fetchRowData(1, isAdmin).then((resp) => {
         resp.json().then((rows) => {
+          sumArraysAtIndex(rows, 1);
           setClassesTaken(sumArraysAtIndex(rows, 1));
         });
       });
@@ -95,7 +94,9 @@ const Overview = ({ startDate, endDate, trainers, locationTrainersMap }) => {
           "Classes Taken": [classesTaken],
           Attendance: [attendance],
         }}
-        parseItem={(item) => item}
+        parseItem={(item) => {
+          return item ? item : 0;
+        }}
       />
     </Container>
   );

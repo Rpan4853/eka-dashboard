@@ -72,7 +72,6 @@ export const AuthStateProvider = ({ children }) => {
         headers: new Headers({ "Content-Type": "application/json" }),
       }).then((resp) => {
         resp.json().then((data) => {
-          console.log(data);
           setIsAdmin(data.admin);
           setLocation(data.location);
           setUserId(data.id);

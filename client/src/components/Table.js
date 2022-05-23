@@ -46,6 +46,7 @@ const Table = ({
   };
 
   const deleteRow = (index, rowObjId) => {
+    console.log(`api/rows/${rowObjId}`);
     fetch(`api/rows/${rowObjId}`, {
       method: "DELETE",
     }).then((resp) => {
