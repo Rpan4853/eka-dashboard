@@ -120,11 +120,4 @@ router.get("/admins", (req, res) => {
   });
 });
 
-router.all("*", (req, res) => {
-  console.log(`API route not found: ${req.method} ${req.url}`);
-  res.sendFile(
-    path.join(path.basename(path.dirname(__dirname)), "client/build/index.html")
-  );
-});
-
 module.exports = router;

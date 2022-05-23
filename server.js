@@ -25,6 +25,11 @@ app.use(express.static(path.join(__dirname, "client/build")));
 
 app.use("/api", api);
 
+app.all("*", (req, res) => {
+  console.log(`API route not found: ${req.method} ${req.url}`);
+  res.sendFile(path.join(__dirname, "client/build/index.html"));
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
